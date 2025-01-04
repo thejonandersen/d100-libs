@@ -1,4 +1,4 @@
-import {z} from "zod/lib/index";
+import {z} from "zod";
 
 export const CreateLanguageSchema = z.object({
     name: z.string(),

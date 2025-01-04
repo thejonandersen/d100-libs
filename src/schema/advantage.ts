@@ -1,6 +1,6 @@
 import {z} from "zod";
 
-const AvantageRequirementType = z.enum([
+export const AdvantageRequirementTypeName = z.enum([
     "stat",
     "skill",
     "tier",
@@ -10,8 +10,10 @@ const AvantageRequirementType = z.enum([
     "power"
 ]);
 
+export type AdvantageRequirementType = z.infer<typeof AdvantageRequirementTypeName>
 
-export const Skill = z.union([
+
+export const SkillName = z.union([
     z.literal("athletics"),
     z.literal("powers"),
     z.literal("combat"),
@@ -50,13 +52,17 @@ export const Skill = z.union([
     z.literal("stealth"),
 ]);
 
-export const Power = z.union([
+export type Skill = z.infer<typeof SkillName>
+
+export const PowerName = z.union([
     z.literal("divination"),
     z.literal("energy"),
     z.literal("life"),
     z.literal("mind"),
     z.literal("planar"),
 ]);
+
+export type Power = z.infer<typeof PowerName>
 
 export const StatName = z.union([
     z.literal("str"),
@@ -68,17 +74,21 @@ export const StatName = z.union([
     z.literal("chr"),
 ]);
 
-const AdvantageRequirement = z.object({
-    type: AvantageRequirementType,
-    skill: Skill.optional(),
-    power: Power.optional(),
+export type Stat = z.infer<typeof StatName>
+
+export const AdvantageRequirementSchema = z.object({
+    type: AdvantageRequirementTypeName,
+    skill: SkillName.optional(),
+    power: PowerName.optional(),
     stat: StatName.optional(),
     raceId: z.string().optional(),
     advantageId: z.string().optional(),
     value: z.number().optional()
 });
 
-const AdvantageCategory = z.union([
+export type AdvantageRequirement = z.infer<typeof AdvantageRequirementSchema>
+
+export const AdvantageCategoryName = z.union([
     z.literal("Ally_Framework"),
     z.literal("Archetype"),
     z.literal("Armor"),
@@ -93,12 +103,14 @@ const AdvantageCategory = z.union([
     z.literal("Tactical"),
 ]);
 
+export type AdvantageCategory = z.infer<typeof AdvantageCategoryName>
+
 export const CreateAdvantageSchema = z.object({
     name: z.string(),
     description: z.string(),
-    category: AdvantageCategory,
+    category: AdvantageCategoryName,
     raceIds: z.array(z.string()).optional(),
-    requirements: z.array(AdvantageRequirement),
+    requirements: z.array(AdvantageRequirementSchema),
     cost: z.number(),
     special: z.string().optional(),
 });
@@ -110,9 +122,9 @@ export const CreateAdvantageRequestSchema = z.object({
 export const UpdateAdvantageSchema = z.object({
     name: z.string().optional(),
     description: z.string().optional(),
-    category: AdvantageCategory.optional(),
+    category: AdvantageCategoryName.optional(),
     raceIds: z.array(z.string()).optional(),
-    requirements: z.array(AdvantageRequirement).optional(),
+    requirements: z.array(AdvantageRequirementSchema).optional(),
     cost: z.number().optional(),
     special: z.string().optional(),
 });

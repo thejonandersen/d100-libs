@@ -1,24 +1,24 @@
 import {z} from "zod";
 
-export const Stat = z.object({
+export const StatSchema = z.object({
     min: z.number(),
     max: z.number(),
     current: z.number().optional(),
 });
 
-export const StatBlock = z.object({
-    str: Stat,
-    con: Stat,
-    siz: Stat,
-    int: Stat,
-    pow: Stat,
-    dex: Stat,
-    chr: Stat,
+export const StatBlockSchema = z.object({
+    str: StatSchema,
+    con: StatSchema,
+    siz: StatSchema,
+    int: StatSchema,
+    pow: StatSchema,
+    dex: StatSchema,
+    chr: StatSchema,
 });
 
 export const CreateRaceSchema = z.object({
         name: z.string(),
-        stats: StatBlock.optional(),
+        stats: StatBlockSchema.optional(),
         advantages: z.array(z.string()).optional(),
         cost: z.number().optional(),
         move: z.number().optional(),
@@ -34,7 +34,7 @@ export const CreateRaceRequestSchema = z.object({
 
 export const UpdateRaceSchema = z.object({
     name: z.string().optional(),
-    stats: StatBlock.optional(),
+    stats: StatBlockSchema.optional(),
     advantages: z.array(z.string()).optional(),
     cost: z.number().optional(),
     move: z.number().optional(),
