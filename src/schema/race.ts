@@ -1,4 +1,5 @@
 import {z} from "zod";
+import {JSONSchema} from './common'
 
 export const StatSchema = z.object({
     min: z.number(),
@@ -24,7 +25,7 @@ export const CreateRaceSchema = z.object({
         move: z.number().optional(),
         languageIds: z.array(z.string()).optional(),
         languages: z.any().optional(),
-        special: z.any().optional()
+        special: JSONSchema.optional()
 });
 
 export const CreateRaceRequestSchema = z.object({

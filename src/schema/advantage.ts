@@ -1,4 +1,5 @@
 import {z} from "zod";
+import {JSONSchema} from './common'
 
 export const AdvantageRequirementTypeName = z.enum([
     "stat",
@@ -112,7 +113,7 @@ export const CreateAdvantageSchema = z.object({
     raceIds: z.array(z.string()).optional(),
     requirements: z.array(AdvantageRequirementSchema),
     cost: z.number(),
-    special: z.string().optional(),
+    special: JSONSchema.optional(),
 });
 
 export const CreateAdvantageRequestSchema = z.object({
