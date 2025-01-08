@@ -6,3 +6,4 @@ export {LoginSchema, LoginRequestSchema, RegisterRequestSchema, RegisterSchema} 
 export {StatSchema, StatBlockSchema, UpdateRaceSchema, CreateRaceSchema, CreateRaceRequestSchema, UpdateRaceRequestSchema} from './schema/race'
 export {UserSchema} from './schema/user'
 export type {User} from './schema/user'
+export {JSONSchema} from './schema/common'

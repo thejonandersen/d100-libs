@@ -1,20 +1,21 @@
 import {z} from "zod";
-import {JSONSchema} from './common'
+import {JSONSchema, NumberInputSchema} from './common'
 
-export const AdvantageRequirementTypeName = z.enum([
-    "stat",
-    "skill",
-    "tier",
-    "power_pool",
-    "race",
-    "advantage",
-    "power"
+export const AdvantageRequirementTypeName = z.union([
+    z.literal("stat"),
+    z.literal("skill"),
+    z.literal("tier"),
+    z.literal("power_pool"),
+    z.literal("race"),
+    z.literal("advantage"),
+    z.literal("power")
 ]);
 
 export type AdvantageRequirementType = z.infer<typeof AdvantageRequirementTypeName>
 
 
 export const SkillName = z.union([
+    z.undefined(),
     z.literal("athletics"),
     z.literal("powers"),
     z.literal("combat"),
@@ -61,6 +62,7 @@ export const PowerName = z.union([
     z.literal("life"),
     z.literal("mind"),
     z.literal("planar"),
+    z.undefined(),
 ]);
 
 export type Power = z.infer<typeof PowerName>
@@ -73,18 +75,71 @@ export const StatName = z.union([
     z.literal("pow"),
     z.literal("dex"),
     z.literal("chr"),
+    z.undefined(),
 ]);
 
 export type Stat = z.infer<typeof StatName>
 
 export const AdvantageRequirementSchema = z.object({
     type: AdvantageRequirementTypeName,
-    skill: SkillName.optional(),
-    power: PowerName.optional(),
-    stat: StatName.optional(),
-    raceId: z.string().optional(),
-    advantageId: z.string().optional(),
-    value: z.number().optional()
+    skill: SkillName.describe('{"template":"Conditional", "condition": {"key":"type", "value":"skill"}}').optional(),
+    power: PowerName.describe('{"template":"Conditional", "condition": {"key":"type", "value":"power"}}').optional(),
+    stat: StatName.describe('{"template":"Conditional", "condition": {"key":"type", "value":"stat"}}').optional(),
+    raceId: z.string().describe(
+        '{"template":"Conditional", "condition": {"key":"type", "value":"race"}, "subTemplate":{"template": "AsyncSelect", "endpoint": "/race", "selectionKey": "id"}}'
+    ).optional(),
+    advantageId: z.string().describe(
+        '{"template":"Conditional", "condition": {"key":"type", "value":"advantage"}, "subTemplate":{"template": "AsyncSelect", "endpoint": "/race", "selectionKey": "id"}}'
+    ).optional(),
+    value: NumberInputSchema.optional()
+}).superRefine((data, ctx) => {
+    switch (data.type) {
+        case "advantage":
+            if (!data.advantageId) {
+                return ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: 'required',
+                    path: ['advantageId']
+                });
+            }
+            break;
+        case "power":
+            if (!data.power) {
+                return ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: 'required',
+                    path: ['advantageId']
+                });
+            }
+            break;
+        case "skill":
+            if (!data.skill) {
+                return ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: 'required',
+                    path: ['advantageId']
+                });
+            }
+            break;
+        case "stat":
+            if (!data.stat) {
+                return ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: 'required',
+                    path: ['advantageId']
+                });
+            }
+            break;
+        case "race":
+            if (!data.raceId) {
+                return ctx.addIssue({
+                    code: z.ZodIssueCode.custom,
+                    message: 'required',
+                    path: ['advantageId']
+                });
+            }
+            break;
+    }
 });
 
 export type AdvantageRequirement = z.infer<typeof AdvantageRequirementSchema>
@@ -110,9 +165,8 @@ export const CreateAdvantageSchema = z.object({
     name: z.string(),
     description: z.string(),
     category: AdvantageCategoryName,
-    raceIds: z.array(z.string()).optional(),
     requirements: z.array(AdvantageRequirementSchema),
-    cost: z.number(),
+    cost: NumberInputSchema,
     special: JSONSchema.optional(),
 });
 
@@ -124,9 +178,8 @@ export const UpdateAdvantageSchema = z.object({
     name: z.string().optional(),
     description: z.string().optional(),
     category: AdvantageCategoryName.optional(),
-    raceIds: z.array(z.string()).optional(),
     requirements: z.array(AdvantageRequirementSchema).optional(),
-    cost: z.number().optional(),
+    cost: NumberInputSchema,
     special: z.string().optional(),
 });
 
