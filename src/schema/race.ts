@@ -1,31 +1,29 @@
 import {z} from "zod";
-import {JSONSchema} from './common'
+import {JSONSchema, StatBlockSchema} from './common'
 
-export const StatSchema = z.object({
-    min: z.number(),
-    max: z.number(),
-    current: z.number().optional(),
-});
-
-export const StatBlockSchema = z.object({
-    str: StatSchema,
-    con: StatSchema,
-    siz: StatSchema,
-    int: StatSchema,
-    pow: StatSchema,
-    dex: StatSchema,
-    chr: StatSchema,
-});
+export const RaceTypesSchema = z.union([
+    z.literal('Alien'),
+    z.literal('Beasts and Plants'),
+    z.literal('Construct'),
+    z.literal('Humanoid'),
+    z.literal('Illusion'),
+    z.literal('Undead'),
+])
 
 export const CreateRaceSchema = z.object({
+        id: z.string().nullish(),
         name: z.string(),
-        stats: StatBlockSchema.optional(),
-        advantages: z.array(z.string()).optional(),
-        cost: z.number().optional(),
-        move: z.number().optional(),
-        languageIds: z.array(z.string()).optional(),
-        languages: z.any().optional(),
-        special: JSONSchema.optional()
+        type: RaceTypesSchema.nullish(),
+        stats: StatBlockSchema.nullish(),
+        advantageIds: z.array(z.string().describe(
+            '{"template": "AsyncSelect", "endpoint": "/advantage", "selectionKey": "id"}'
+        )).nullish(),
+        cost: z.number().nullish(),
+        move: z.number().nullish(),
+        languageIds: z.array(z.string().describe(
+            '{"template": "AsyncSelect", "endpoint": "/language", "selectionKey": "id"}'
+        )).nullish(),
+        special: JSONSchema.nullish().describe('{"template":"JSON"}'),
 });
 
 export const CreateRaceRequestSchema = z.object({
@@ -34,13 +32,19 @@ export const CreateRaceRequestSchema = z.object({
 
 
 export const UpdateRaceSchema = z.object({
-    name: z.string().optional(),
-    stats: StatBlockSchema.optional(),
-    advantages: z.array(z.string()).optional(),
-    cost: z.number().optional(),
-    move: z.number().optional(),
-    languageIds: z.array(z.string()).optional(),
-    special: z.any().optional()
+    id: z.string().nullish(),
+    name: z.string().nullish(),
+    type: RaceTypesSchema.nullish(),
+    stats: StatBlockSchema.nullish(),
+    advantageIds: z.string().describe(
+        '{"template": "AsyncSelect", "endpoint": "/advantage", "selectionKey": "id"}'
+    ).nullish(),
+    cost: z.number().nullish(),
+    move: z.number().nullish(),
+    languageIds: z.string().describe(
+        '{"template": "AsyncSelect", "endpoint": "/language", "selectionKey": "id"}'
+    ).nullish(),
+    special: JSONSchema.nullish().describe('{"template":"JSON"}'),
 });
 
 export const UpdateRaceRequestSchema = z.object({
