@@ -17,7 +17,7 @@ export const NumberInputSchema = z.preprocess(
 export const StatSchema = z.object({
     min: z.number(),
     max: z.number(),
-    current: z.number().nullish(),
+    current: z.number().nullish().describe('{"template": "none"}'),
 });
 
 export const StatBlockSchema = z.object({

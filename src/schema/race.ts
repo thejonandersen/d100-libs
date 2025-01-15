@@ -8,20 +8,20 @@ export const RaceTypesSchema = z.union([
     z.literal('Humanoid'),
     z.literal('Illusion'),
     z.literal('Undead'),
-])
+]).describe('{"multiple": true, "template": "Union"}');
 
 export const CreateRaceSchema = z.object({
         id: z.string().nullish(),
         name: z.string(),
-        type: RaceTypesSchema.nullish(),
+        type: z.array(RaceTypesSchema).nullish(),
         stats: StatBlockSchema.nullish(),
         advantageIds: z.array(z.string().describe(
-            '{"template": "AsyncSelect", "endpoint": "/advantage", "selectionKey": "id"}'
+            '{"template": "AsyncSelect", "endpoint": "/advantage", "selectionKey": "id", "multiple": true}'
         )).nullish(),
         cost: z.number().nullish(),
         move: z.number().nullish(),
         languageIds: z.array(z.string().describe(
-            '{"template": "AsyncSelect", "endpoint": "/language", "selectionKey": "id"}'
+            '{"template": "AsyncSelect", "endpoint": "/language", "selectionKey": "id", "multiple": true}'
         )).nullish(),
         special: JSONSchema.nullish().describe('{"template":"JSON"}'),
 });
