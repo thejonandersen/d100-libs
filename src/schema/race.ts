@@ -11,7 +11,6 @@ export const RaceTypesSchema = z.union([
 ]).describe('{"multiple": true, "template": "Union"}');
 
 export const CreateRaceSchema = z.object({
-        id: z.string().nullish(),
         name: z.string(),
         type: z.array(RaceTypesSchema).nullish(),
         stats: StatBlockSchema.nullish(),
@@ -32,7 +31,6 @@ export const CreateRaceRequestSchema = z.object({
 
 
 export const UpdateRaceSchema = z.object({
-    id: z.string().nullish(),
     name: z.string().nullish(),
     type: RaceTypesSchema.nullish(),
     stats: StatBlockSchema.nullish(),

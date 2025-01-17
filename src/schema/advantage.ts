@@ -84,7 +84,6 @@ export const AdvantageCategoryName = z.union([
 export type AdvantageCategory = z.infer<typeof AdvantageCategoryName>
 
 export const CreateAdvantageSchema = z.object({
-    id: z.string().nullish().describe('{"template":"none"}'),
     name: z.string(),
     description: z.string(),
     category: AdvantageCategoryName,
@@ -98,7 +97,6 @@ export const CreateAdvantageRequestSchema = z.object({
 });
 
 export const UpdateAdvantageSchema = z.object({
-    id: z.string().nullish().describe('{"template":"none"}'),
     name: z.string().nullish(),
     description: z.string().nullish(),
     category: AdvantageCategoryName.nullish(),
