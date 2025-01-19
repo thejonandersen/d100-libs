@@ -32,16 +32,16 @@ export const CreateRaceRequestSchema = z.object({
 
 export const UpdateRaceSchema = z.object({
     name: z.string().nullish(),
-    type: RaceTypesSchema.nullish(),
+    type: z.array(RaceTypesSchema).nullish(),
     stats: StatBlockSchema.nullish(),
-    advantageIds: z.string().describe(
-        '{"template": "AsyncSelect", "endpoint": "/advantage", "selectionKey": "id"}'
-    ).nullish(),
+    advantageIds: z.array(z.string().describe(
+        '{"template": "AsyncSelect", "endpoint": "/advantage", "selectionKey": "id", "multiple": true}'
+    )).nullish(),
     cost: z.number().nullish(),
     move: z.number().nullish(),
-    languageIds: z.string().describe(
-        '{"template": "AsyncSelect", "endpoint": "/language", "selectionKey": "id"}'
-    ).nullish(),
+    languageIds: z.array(z.string().describe(
+        '{"template": "AsyncSelect", "endpoint": "/language", "selectionKey": "id", "multiple": true}'
+    )).nullish(),
     special: JSONSchema.nullish().describe('{"template":"JSON"}'),
 });
 
