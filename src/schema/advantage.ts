@@ -87,7 +87,7 @@ export const CreateAdvantageSchema = z.object({
     name: z.string(),
     description: z.string(),
     category: AdvantageCategoryName,
-    requirements: z.array(AdvantageRequirementSchema),
+    requirements: z.array(AdvantageRequirementSchema).nullish(),
     cost: NumberInputSchema,
     special: JSONSchema.nullish().describe('{"template":"JSON"}'),
 });

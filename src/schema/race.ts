@@ -15,12 +15,12 @@ export const CreateRaceSchema = z.object({
         type: z.array(RaceTypesSchema).nullish(),
         stats: StatBlockSchema.nullish(),
         advantageIds: z.array(z.string().describe(
-            '{"template": "AsyncSelect", "endpoint": "/advantage", "selectionKey": "id", "multiple": true}'
+            '{"template": "AsyncSelect", "collection": "advantage", "selectionKey": "id", "multiple": true}'
         )).nullish(),
         cost: z.number().nullish(),
         move: z.number().nullish(),
         languageIds: z.array(z.string().describe(
-            '{"template": "AsyncSelect", "endpoint": "/language", "selectionKey": "id", "multiple": true}'
+            '{"template": "AsyncSelect", "collection": "language", "selectionKey": "id", "multiple": true}'
         )).nullish(),
         special: JSONSchema.nullish().describe('{"template":"JSON"}'),
 });
@@ -35,12 +35,12 @@ export const UpdateRaceSchema = z.object({
     type: z.array(RaceTypesSchema).nullish(),
     stats: StatBlockSchema.nullish(),
     advantageIds: z.array(z.string().describe(
-        '{"template": "AsyncSelect", "endpoint": "/advantage", "selectionKey": "id", "multiple": true}'
+        '{"template": "AsyncSelect", "collection": "advantage", "selectionKey": "id", "multiple": true}'
     )).nullish(),
     cost: z.number().nullish(),
     move: z.number().nullish(),
     languageIds: z.array(z.string().describe(
-        '{"template": "AsyncSelect", "endpoint": "/language", "selectionKey": "id", "multiple": true}'
+        '{"template": "AsyncSelect", "collection": "language", "selectionKey": "id", "multiple": true}'
     )).nullish(),
     special: JSONSchema.nullish().describe('{"template":"JSON"}'),
 });
