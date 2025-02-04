@@ -17,7 +17,7 @@ export const NumberInputSchema = z.preprocess(
 export const StatSchema = z.object({
     min: z.number(),
     max: z.number(),
-    current: z.number().nullish().describe('{"template": "none"}'),
+    current: z.number().nullish().describe('{"template": "none"}')
 });
 
 export const StatBlockSchema = z.object({
@@ -27,7 +27,7 @@ export const StatBlockSchema = z.object({
     int: StatSchema,
     pow: StatSchema,
     dex: StatSchema,
-    chr: StatSchema,
+    chr: StatSchema
 });
 
 export const StatName = z.union([
@@ -38,7 +38,7 @@ export const StatName = z.union([
     z.literal("pow"),
     z.literal("dex"),
     z.literal("chr"),
-    z.undefined(),
+    z.undefined()
 ]);
 
 export type Stat = z.infer<typeof StatName>
@@ -80,7 +80,7 @@ export const SkillName = z.union([
     z.literal("acrobatics"),
     z.literal("dodge"),
     z.literal("pilot"),
-    z.literal("stealth"),
+    z.literal("stealth")
 ]);
 
 export type Skill = z.infer<typeof SkillName>
@@ -91,7 +91,80 @@ export const PowerName = z.union([
     z.literal("life"),
     z.literal("mind"),
     z.literal("planar"),
-    z.undefined(),
+    z.undefined()
 ]);
 
 export type Power = z.infer<typeof PowerName>
+
+export const AthleticsSkills = z.object({
+    base: z.number(),
+    acrobatics: z.number(),
+    dodge: z.number(),
+    pilot: z.number(),
+    stealth: z.number()
+})
+
+export const PowerSkills = z.object({
+    base: z.number(),
+    divination: z.number(),
+    energy: z.number(),
+    life: z.number(),
+    mind: z.number(),
+    planar: z.number()
+})
+
+export const CombatSkills = z.object({
+    base          : z.number(),
+    axes_and_picks: z.number(),
+    blade         : z.number(),
+    bludgeoning   : z.number(),
+    natural       : z.number(),
+    projectile    : z.number(),
+    shield        : z.number(),
+    staff_weapons : z.number(),
+})
+
+export const InteractionSkills = z.object({
+    base        : z.number(),
+    chicanery   : z.number(),
+    command     : z.number(),
+    diplomacy   : z.number(),
+    fast_talking: z.number(),
+})
+
+export const ProfessionType =z.object({
+    base: z.number(),
+    name: z.string(),
+})
+
+export const ProfessionSkills = z.object({
+    base: z.number(),
+    knownTypes: ProfessionType.nullish()
+})
+
+export const LoreSkills = z.object({
+    base      : z.number(),
+    arcana    : z.number(),
+    nature    : z.number(),
+    history   : z.number(),
+    social    : z.number(),
+    technology: z.number(),
+})
+
+export const ObservationSkills = z.object({
+    base      : z.number(),
+    appraise  : z.number(),
+    insight   : z.number(),
+    navigate  : z.number(),
+    perception: z.number(),
+})
+
+export const SkillsBlockSchema = z.object({
+    athletics: AthleticsSkills,
+    powers: PowerSkills,
+    combat: CombatSkills,
+    interaction: InteractionSkills,
+    profession: ProfessionSkills,
+    lore: LoreSkills,
+    observation: ObservationSkills,
+})

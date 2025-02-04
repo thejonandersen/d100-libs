@@ -14,13 +14,13 @@ export type AdvantageRequirementType = z.infer<typeof AdvantageRequirementTypeNa
 
 export const AdvantageRequirementSchema = z.object({
     type: AdvantageRequirementTypeName,
-    skill: SkillName.describe('{"template":"Conditional", "condition": {"key":"type", "value":"skill"}}').nullish(),
-    stat: StatName.describe('{"template":"Conditional", "condition": {"key":"type", "value":"stat"}}').nullish(),
+    skill: SkillName.describe('{"template":"Conditional", "conditions": [{"key":"type", "scope": "parent", "equals":"skill"}]}').nullish(),
+    stat: StatName.describe('{"template":"Conditional", "conditions": [{"key":"type", "scope": "parent", "equals":"stat"}]}').nullish(),
     raceId: z.string().describe(
-        '{"template":"Conditional", "condition": {"key":"type", "value":"race"}, "subTemplate":{"template": "AsyncSelect", "endpoint": "/race", "selectionKey": "id"}}'
+        '{"template":"Conditional", "collection": "race", "conditions": [{"key":"type", "scope": "parent", "equals":"race"}], "subTemplate":{"template": "AsyncSelect", "endpoint": "/race", "selectionKey": "id"}}'
     ).nullish(),
     advantageId: z.string().describe(
-        '{"template":"Conditional", "condition": {"key":"type", "value":"advantage"}, "subTemplate":{"template": "AsyncSelect", "endpoint": "/advantage", "selectionKey": "id"}}'
+        '{"template":"Conditional", "collection": "advantage", "conditions": [{"key":"type", "scope": "parent", "equals":"advantage"}], "subTemplate":{"template": "AsyncSelect", "endpoint": "/advantage", "selectionKey": "id"}}'
     ).nullish(),
     value: NumberInputSchema.nullish()
 }).superRefine((data, ctx) => {
